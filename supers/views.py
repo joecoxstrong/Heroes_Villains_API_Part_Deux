@@ -10,23 +10,38 @@ from django.shortcuts import get_object_or_404
 
 @api_view(['GET','POST'])
 def super_list(request):
-    super_types_param = request.query_params.get('type')
-    sort_param = request.query_params.get('sort')
-    supers = Supers.objects.all()
+    
+    
 
-    if super_types_param:
-        supers = supers.filter(super_type__type = super_types_param)
-    else:
-        super_types = SuperTypes.objects.all()
-        custom_response_dictionary = {}
+    if request.method == 'GET':
+        supers = Supers.objects.all()
+        super_types_param = request.query_params.get('type')
+        
+        
+        if super_types_param:
+            supers = supers.filter(super_type__type = super_types_param)
+            serializer=SuperSerializer(supers,many=True)    
+            return Response(serializer.data)
+      
+                
+        else:
+            super_types = SuperTypes.objects.all()
+            custom_response_dictionary = {}
 
-        for super_type in super_types:
-            supers = Supers.objects.filter(super_type__type = super_type.type)
+            for super_type in super_types:
+                supers = Supers.objects.filter(super_type__type = super_type.type)
 
-            super_serializer = SuperSerializer(supers, many = True)
-            custom_response_dictionary[super_type.type] = super_serializer.data    
+                super_serializer = SuperSerializer(supers, many = True)
+                custom_response_dictionary[super_type.type] = super_serializer.data    
 
-    return Response(custom_response_dictionary)
+            return Response(custom_response_dictionary)
+
+
+    elif request.method == 'POST':
+        serilaizer = SuperSerializer(data=request.data)
+        serilaizer.is_valid(raise_exception=True)
+        serilaizer.save()
+        return Response(serilaizer.data, status=status.HTTP_201_CREATED)    
 
 
 @api_view(['GET','PUT','DELETE'])

@@ -16,10 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-import super_types
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/super_types/', include('super_types.urls')),
-    # path('api/supers/', include('supers.urls'))
+    path('api/supers/', include('supers.urls'))
 ]

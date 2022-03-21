@@ -4,7 +4,7 @@ from rest_framework.urlpatterns import format_suffix_patterns
 
 urlpatterns = [
     path('', views.super_types_list),
-    # path('<int:pk>/', view.super_types_detail)
+    path('<int:pk>/', views.super_types_detail)
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
