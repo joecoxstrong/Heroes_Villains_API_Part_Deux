@@ -3,7 +3,7 @@ from . import views
 from rest_framework.urlpatterns import format_suffix_patterns
 
 urlpatterns = [
-    path('', views.super_types_list),
+    path('', views.super_list),
     # path('<int:pk>/', view.super_types_detail)
 ]
 
